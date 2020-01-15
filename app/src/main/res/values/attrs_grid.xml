@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="Grid">
+        <attr name="letter_size" format="dimension" />
+    </declare-styleable>
+</resources>
