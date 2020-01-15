@@ -1,2 +1,2 @@
 # word-search-app
-Word Search App for Spotify
+Word Search App for Shopify
