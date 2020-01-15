@@ -1,4 +1,4 @@
-package com.victorlengler.wordsearch;
+package com.victorlengler.wordsearch.old;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -1,4 +1,4 @@
-package com.victorlengler.wordsearch;
+package com.victorlengler.wordsearch.old;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+
+import com.victorlengler.wordsearch.R;
 
 public abstract class Grid extends ViewGroup {
 

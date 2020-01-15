@@ -1,4 +1,4 @@
-package com.victorlengler.wordsearch;
+package com.victorlengler.wordsearch.old;
 
 import android.annotation.TargetApi;
 import android.content.Context;

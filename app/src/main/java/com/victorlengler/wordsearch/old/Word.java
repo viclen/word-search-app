@@ -1,4 +1,4 @@
-package com.victorlengler.wordsearch;
+package com.victorlengler.wordsearch.old;
 
 public class Word {
     private final String word;

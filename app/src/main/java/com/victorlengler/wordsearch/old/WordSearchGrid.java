@@ -1,4 +1,4 @@
-package com.victorlengler.wordsearch;
+package com.victorlengler.wordsearch.old;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -166,7 +166,6 @@ public class WordSearchGrid extends TiledGrid {
             for (int col = 0; col < letterBoard[row].length; col++) {
                 if (TextUtils.isEmpty(letterBoard[row][col])) {
                     Random r = new Random();
-                    //TODO: This only considers the English alphabet for now
                     letterBoard[row][col] = String.valueOf((char) (r.nextInt(26) + 'a'));
                 }
             }
