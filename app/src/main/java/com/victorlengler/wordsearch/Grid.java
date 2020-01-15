@@ -1,12 +1,10 @@
 package com.victorlengler.wordsearch;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -38,13 +36,10 @@ public abstract class Grid extends ViewGroup {
         init(attrs);
     }
 
-    @SuppressWarnings("unused")
     public Grid(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
-
-    public abstract void clearBoard();
 
     private void init(AttributeSet attrs) {
         if (attrs != null) {
