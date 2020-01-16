@@ -15,7 +15,6 @@
         android:fontFamily="casual"
         android:text="Current"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/colorLetter"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -43,6 +42,18 @@
         android:background="@drawable/letter_border"
         tools:layout_editor_absoluteX="91dp"
         tools:layout_editor_absoluteY="731dp" />
+
+    <Button
+        android:id="@+id/buttonNewGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="New Game"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,23 +8,24 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Grid extends TableLayout {
+public class Grid extends TableLayout implements Serializable {
     public static final int DIRECTION_HORIZONTAL = 1;
     public static final int DIRECTION_VERTICAL = 2;
     public static final int DIRECTION_DIAGONAL = 3;
     public static final int DIRECTION_DIAGONAL2 = 4;
 
-    private List<String> wordsToFind;
     private List<Letter> selectedLetters = new ArrayList();
     private Letter[][] lettersArray;
     private Letter firstSelected = null;
     private int max;
     private int cellSize;
+    private boolean generated;
 
     public Grid(Context context) {
         super(context);
@@ -35,7 +36,6 @@ public class Grid extends TableLayout {
     }
 
     public void generateGrid(List<String> wordsToFind, int max, int cellSize, int letterSize, Letter[][] letters) {
-        this.wordsToFind = wordsToFind;
         this.lettersArray = letters;
         this.max = max;
         this.cellSize = cellSize;
@@ -290,5 +290,16 @@ public class Grid extends TableLayout {
 
     public void setFirstSelected(Letter firstSelected) {
         this.firstSelected = firstSelected;
+    }
+
+    public boolean isGenerated() {
+        return lettersArray != null
+                && lettersArray.length > 0
+                && lettersArray[0][0] != null
+                && lettersArray[0][0].getValue() + "" != "";
+    }
+
+    public void setLettersArray(Letter[][] lettersArray) {
+        this.lettersArray = lettersArray;
     }
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#007CAD</color>
+    <color name="colorPrimaryDark">#00628A</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorToFind">#00628A</color>
     <color name="colorFound">#007CAD</color>
     <color name="colorSelected">#59D8FF</color>
     <color name="colorBorder">#664D4D4D</color>
     <color name="colorLetter">#636363</color>
-    <color name="colorFoundWord">#FF0000</color>
-    <color name="colorBackgroundLetter">#D7D7D7</color>
+    <color name="colorFoundWord">#949494</color>
+    <color name="colorBackgroundLetter">#FFFFFF</color>
 </resources>
