@@ -1,6 +1,7 @@
 package com.victorlengler.wordsearch;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,15 +28,15 @@ public class Letter implements Serializable {
         this.x = x;
         this.y = y;
 
-        TextView cell = new TextView(context);
-        cell.setWidth(cellSize);
-        cell.setHeight(cellSize);
-        cell.setBackgroundResource(R.drawable.letter_border);
-        cell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        cell.setTextSize(letterSize);
-        cell.setText(value + "");
-        cell.setPadding(0,0,0,0);
-        this.view = cell;
+        view = new TextView(context);
+        view.setWidth(cellSize);
+        view.setHeight(cellSize);
+        view.setBackgroundResource(R.drawable.letter_border);
+        view.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        view.setTextSize(letterSize);
+        view.setText(value + "");
+        view.setTypeface(Typeface.create("casual", Typeface.BOLD));
+        view.setPadding(0,0,0,0);
     }
 
     public char getValue() {

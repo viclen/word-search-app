@@ -12,14 +12,15 @@
         android:id="@+id/selectingTextView"
         android:layout_width="wrap_content"
         android:layout_height="39dp"
-        android:layout_marginTop="16dp"
+        android:fontFamily="casual"
         android:text="Current"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorLetter"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/wordsTable"
-        app:layout_constraintStart_toStartOf="@+id/wordsTable"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <com.victorlengler.wordsearch.Grid
         android:id="@+id/grid"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/letter_border"
-        android:padding="2dp"
+        android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="395dp"></com.victorlengler.wordsearch.Grid>
@@ -39,10 +40,9 @@
         android:id="@+id/wordsTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/letter_border"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="91dp" />
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="731dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
