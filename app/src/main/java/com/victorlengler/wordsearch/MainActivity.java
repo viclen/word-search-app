@@ -187,15 +187,17 @@ public class MainActivity extends AppCompatActivity {
         List<Letter> selectedLetters = mGrid.getSelectedLetters();
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (verifySelected()) {
-                for (int i = 0; i < selectedLetters.size(); i++) {
-                    selectedLetters.get(i).getView().setBackgroundResource(R.drawable.letter_found);
-                }
-            }
+//            if (verifySelected()) {
+//                for (int i = 0; i < selectedLetters.size(); i++) {
+//                    selectedLetters.get(i).setFound(true);
+//                }
+//            }
+//
+//            mGrid.setSelectedLetters(new ArrayList());
+//
+//            mGrid.setFirstSelected(null);
 
-            mGrid.setSelectedLetters(new ArrayList());
-
-            mGrid.setFirstSelected(null);
+            mGrid.onTouchEvent(event);
         }
 
         this.update();
@@ -211,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (wordsToFind.contains(word)) {
-            blink(selectingTextView);
             mFoundWords.add(word);
             return true;
         } else if (wordsToFind.contains(new StringBuilder(word).reverse().toString())) {
@@ -227,9 +228,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if(view != selectingTextView){
-            alreadyAnimated.add(view);
-        }
+        alreadyAnimated.add(view);
 
         final Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         view.startAnimation(animation);
