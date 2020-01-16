@@ -1,258 +1,213 @@
 package com.victorlengler.wordsearch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-
-    TableLayout table;
     int cellSize = 70;
     int max = 10;
     int letterSize = 24;
+    int wordsRows = 2;
 
-    List<String> wordsToFind = new ArrayList(Arrays.asList("Swift", "Kotlin", "ObjectiveC", "Variable", "Java", "Mobile"));
-    List foundWords = new ArrayList();
+    List<String> wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE"));
 
-    Letter[][] grid = new Letter[max][max];
+    TextView selectingTextView;
 
-    List<Letter> selectedLetters = new ArrayList();
+    final String STATE_FOUND = "found";
+    final String STATE_GRID = "grid";
 
-    TextView foundTextView;
-
-
-    final int DIRECTION_HORIZONTAL = 1;
-    final int DIRECTION_VERTICAL = 2;
-    final int DIRECTION_DIAGONAL = 3;
-    final int DIRECTION_DIAGONAL2 = 4;
-
-    int current_direction = 0;
+    Grid mGrid;
+    ArrayList mFoundWords = new ArrayList();
+    TableLayout mWordsLayout;
+    ConstraintLayout mainLayout;
+    Letter[][] lettersArray = new Letter[max][max];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.table = findViewById(R.id.table);
-        this.foundTextView = findViewById(R.id.foundTextView);
+        if(savedInstanceState != null){
+            mFoundWords = savedInstanceState.getStringArrayList(STATE_FOUND);
+            lettersArray = (Letter[][])savedInstanceState.getSerializable(STATE_GRID);
 
-        generateGrid();
-    }
-
-    public void generateGrid() {
-        for (int i = 0; i < wordsToFind.size(); i++) {
-            String word = wordsToFind.get(i).toLowerCase();
-            Random rand = new Random();
-            int direction = 3;// rand.nextInt(4) + 1;
-            int placeX, placeY;
-            switch (direction) {
-                case DIRECTION_DIAGONAL:
-                    placeX = rand.nextInt(11 - word.length());
-                    placeY = rand.nextInt(11 - word.length());
-                    for (int j = 0; j < word.length(); j++) {
-                        int x = (placeX + j) * cellSize;
-                        int y = (placeY + j) * cellSize;
-                        if (grid[placeX + j][placeY + j] == null) {
-                            grid[placeX + j][placeY + j] = new Letter(word.charAt(j), x, y, cellSize, letterSize, this);
-                        } else {
-                            for (int k = 0; k <= j; k++) {
-                                grid[placeX + k][placeY + k] = null;
-                            }
-//                            i--;
-                            break;
-                        }
-                    }
-                    break;
-                case DIRECTION_DIAGONAL2:
-                    placeX = rand.nextInt(11 - word.length());
-                    placeY = rand.nextInt(11 - word.length());
-                    for (int j = 0; j < word.length(); j++) {
-                        int x = (placeX + j) * cellSize;
-                        int y = (placeY - j) * cellSize;
-                        if (grid[placeX + j][placeY + j] == null) {
-                            grid[placeX + j][placeY + j] = new Letter(word.charAt(j), x, y, cellSize, letterSize, this);
-                        } else {
-                            for (int k = 0; k <= j; k++) {
-                                grid[placeX + k][placeY + k] = null;
-                            }
-//                            i--;
-                            break;
-                        }
-                    }
-                    break;
-                case DIRECTION_HORIZONTAL:
-
-                    break;
-                case DIRECTION_VERTICAL:
-
-                    break;
+            if(lettersArray == null){
+                lettersArray = new Letter[max][max];
+            }
+            if(mFoundWords == null){
+                mFoundWords = new ArrayList();
             }
         }
+
+        this.mGrid = findViewById(R.id.grid);
+        this.selectingTextView = findViewById(R.id.selectingTextView);
+        this.selectingTextView.setText("");
+
+        this.mWordsLayout = findViewById(R.id.wordsTable);
+//        mWordsLayout.setStretchAllColumns(true);
+
+        this.mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            this.cellSize = width / 11;
+            wordsRows = 2;
+
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(mainLayout);
+
+            constraintSet.connect(R.id.wordsTable,ConstraintSet.LEFT,R.id.mainLayout,ConstraintSet.LEFT,0);
+            constraintSet.connect(R.id.wordsTable,ConstraintSet.RIGHT,R.id.mainLayout,ConstraintSet.RIGHT,0);
+
+            constraintSet.connect(R.id.grid,ConstraintSet.LEFT,R.id.mainLayout,ConstraintSet.LEFT,0);
+            constraintSet.connect(R.id.grid,ConstraintSet.RIGHT,R.id.mainLayout,ConstraintSet.RIGHT,0);
+
+            constraintSet.applyTo(mainLayout);
+        }else{
+            this.cellSize = height / 13;
+            this.letterSize = cellSize / 3;
+            wordsRows = 6;
+
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(mainLayout);
+
+            constraintSet.connect(R.id.wordsTable,ConstraintSet.LEFT,R.id.mainLayout,ConstraintSet.LEFT,0);
+            constraintSet.connect(R.id.wordsTable,ConstraintSet.RIGHT,R.id.mainLayout,ConstraintSet.RIGHT,width / 3);
+
+            constraintSet.connect(R.id.grid,ConstraintSet.LEFT,R.id.mainLayout,ConstraintSet.LEFT,width / 3);
+            constraintSet.connect(R.id.grid,ConstraintSet.RIGHT,R.id.mainLayout,ConstraintSet.RIGHT,0);
+
+            constraintSet.applyTo(mainLayout);
+        }
+
+        mGrid.generateGrid(wordsToFind, max, cellSize, letterSize, lettersArray);
+
+        update();
+    }
+
+    public void update(){
+        List<Letter> selectedLetters = mGrid.getSelectedLetters();
+
+        String s = "";
+        for (int i = 0; i < selectedLetters.size(); i++) {
+            selectedLetters.get(i).getView().setBackgroundResource(R.drawable.letter_selected);
+            s += selectedLetters.get(i).getValue();
+        }
+        selectingTextView.setTextColor(Color.BLACK);
+        selectingTextView.setText(s);
 
         for (int i = 0; i < max; i++) {
-            TableRow row = new TableRow(this);
-            row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT));
-
             for (int j = 0; j < max; j++) {
-                char letter = randomLetter();
-
-                if (grid[i][j] == null) {
-                    int x = i * cellSize;
-                    int y = j * cellSize;
-                    grid[i][j] = new Letter(letter, x, y, cellSize, letterSize, this);
+                Letter l = lettersArray[i][j];
+                if (!selectedLetters.contains(l)) {
+                    l.getView().setBackgroundResource(l.isFound() ? R.drawable.letter_found : R.drawable.letter_border);
+                    l.getView().setTextColor(l.isFound() ? Color.WHITE : getResources().getColor(R.color.colorLetter));
                 }
-
-                row.addView(grid[i][j].getView());
             }
-            table.addView(row);
         }
 
-        table.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                return touchEvent(event);
-            }
-        });
-    }
-
-    public char randomLetter() {
-        String allowed = "QWERTYUIOPASDFGHJKLZXCVBNM";
-
-        Random rand = new Random();
-
-        return allowed.charAt(rand.nextInt(26));
-    }
-
-    public boolean touchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-        Letter letter = getLetter(x, y);
-        if (letter == null) {
-            return false;
+        mWordsLayout.removeAllViews();
+        for(int i = 0; i < wordsRows; i++){
+            mWordsLayout.addView(new TableRow(this));
+            mWordsLayout.addView(new TableRow(this));
         }
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            letter.getView().setBackgroundColor(Color.GREEN);
-            selectedLetters.add(letter);
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            int verification = verifyDirection(letter.getX(), letter.getY());
-            if (verification == 1) {
-                selectedLetters.add(letter);
-                letter.getView().setBackgroundColor(Color.GREEN);
-            } else if (verification == -1) {
-                selectedLetters.get(selectedLetters.size() - 1).getView().setBackgroundColor(Color.TRANSPARENT);
-                selectedLetters.remove(selectedLetters.size() - 1);
+        for (int i = 0; i < wordsToFind.size(); i++){
+            TableRow tr = (TableRow) mWordsLayout.getChildAt(i % wordsRows);
+            TextView t = new TextView(this);
+            t.setPadding(10, 10, 10, 10);
+            t.setText(wordsToFind.get(i));
+            t.setTextSize(20);
+            t.setTextColor(getResources().getColor(R.color.colorToFind));
+            t.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+            if(mFoundWords.contains(wordsToFind.get(i))){
+                t.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                t.setTextColor(getResources().getColor(R.color.colorFound));
             }
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            tr.addView(t);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        List<Letter> selectedLetters = mGrid.getSelectedLetters();
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
             if (verifySelected()) {
                 for (int i = 0; i < selectedLetters.size(); i++) {
-                    selectedLetters.get(i).getView().setBackgroundColor(Color.CYAN);
-                }
-            } else {
-                for (int i = 0; i < selectedLetters.size(); i++) {
-                    selectedLetters.get(i).getView().setBackgroundColor(Color.TRANSPARENT);
+                    selectedLetters.get(i).getView().setBackgroundResource(R.drawable.letter_found);
                 }
             }
-
-            foundTextView.setText(foundWords.toString());
 
             selectedLetters = new ArrayList();
+            mGrid.setSelectedLetters(selectedLetters);
 
-            current_direction = 0;
+            mGrid.setFirstSelected(null);
         }
 
-        return true;
-    }
+        this.update();
 
-    public Letter getLetter(float x, float y) {
-        for (int i = 0; i < max; i++) {
-            for (int j = 0; j < max; j++) {
-                Letter letter = grid[i][j];
-                if (letter.getX() < y - 1 && letter.getY() < x - 1 && letter.getX() + cellSize > y + 1 && letter.getY() + cellSize > x + 1) {
-                    return letter;
-                }
-            }
-        }
-        return null;
-    }
-
-    public int verifyDirection(int x, int y) {
-        int previousX = selectedLetters.get(selectedLetters.size() - 1).getX();
-        int previousY = selectedLetters.get(selectedLetters.size() - 1).getY();
-        int firstX = selectedLetters.get(0).getX();
-        int firstY = selectedLetters.get(0).getY();
-
-        // go back
-        if (selectedLetters.size() > 1 && selectedLetters.get(selectedLetters.size() - 2).getX() == x && selectedLetters.get(selectedLetters.size() - 2).getY() == y) {
-            return -1;
-        }
-
-        // horizontal
-        if ((current_direction == DIRECTION_HORIZONTAL || current_direction == 0) &&
-                (firstX == x && (previousY == y + cellSize && firstY > y || previousY == y - cellSize && firstY < y))) {
-            current_direction = DIRECTION_HORIZONTAL;
-            return 1;
-        }
-
-        // vertical
-        if ((current_direction == DIRECTION_VERTICAL || current_direction == 0) &&
-                (firstY == y && (previousX == x + cellSize && firstX > x || previousX == x - cellSize && firstX < x))) {
-            current_direction = DIRECTION_VERTICAL;
-            return 1;
-        }
-
-        // diagonal
-        if ((current_direction == DIRECTION_DIAGONAL || current_direction == 0) && (
-                previousX == x - cellSize && previousY == y - cellSize && firstX < x && firstY < y ||
-                        previousX == x + cellSize && previousY == y + cellSize && firstX > x && firstY > y ||
-                        previousX == y - cellSize && previousY == x - cellSize && firstX < y && firstY < x ||
-                        previousX == y + cellSize && previousY == x + cellSize && firstX > y && firstY > x ||
-                        previousX == x + cellSize && previousY == y - cellSize && firstX > x && firstY < y ||
-                        previousX == x - cellSize && previousY == y + cellSize && firstX < x && firstY > y ||
-                        previousX == y + cellSize && previousY == x - cellSize && firstX > y && firstY < x ||
-                        previousX == y - cellSize && previousY == x + cellSize && firstX < y && firstY > x
-        )) {
-            current_direction = DIRECTION_DIAGONAL;
-            return 1;
-        }
-
-        return 0;
+        return super.onTouchEvent(event);
     }
 
     public boolean verifySelected() {
+        List<Letter> selectedLetters = mGrid.getSelectedLetters();
         String word = "";
         for (int i = 0; i < selectedLetters.size(); i++) {
             word += selectedLetters.get(i).getValue();
         }
 
         if (wordsToFind.contains(word)) {
-            foundWords.add(word);
+            mFoundWords.add(word);
+            return true;
+        } else if (wordsToFind.contains(new StringBuilder(word).reverse().toString())) {
+            mFoundWords.add(new StringBuilder(word).reverse().toString());
             return true;
         }
 
         return false;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_UP){
-            selectedLetters = new ArrayList();
-            current_direction = 0;
-        }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putSerializable(STATE_GRID, lettersArray);
+//        outState.putStringArrayList(STATE_FOUND, mFoundWords);
+//    }
 
-        return super.onTouchEvent(event);
-    }
+//    @Override
+//    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        int height = displayMetrics.heightPixels;
+//        int width = displayMetrics.widthPixels;
+//        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+//            this.cellSize = width / 10;
+//            this.letterSize = cellSize / 2;
+//            mWordsLayout.setOrientation(LinearLayout.HORIZONTAL);
+//        }else{
+//            this.cellSize = height / 10;
+//            this.letterSize = cellSize / 2;
+//            mWordsLayout.setOrientation(LinearLayout.VERTICAL);
+//        }
+//    }
 }
