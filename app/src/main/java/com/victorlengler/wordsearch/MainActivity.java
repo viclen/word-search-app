@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             // if grid size is 12, the dificulty is normal
             if (maxGridSize == 12) {
-                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER"));
+                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", ""));
 
             // if grid size is 15, the dificulty is hard
             } else if (maxGridSize == 15) {
@@ -486,7 +486,7 @@ public class MainActivity extends AppCompatActivity {
         // if the formed word is in the list to find
         if (wordsToFind.contains(word)) {
             // if the word is not already found
-            if (!mFoundWords.contains(word)) {
+            if (!mFoundWords.contains(word) && !word.isEmpty()) {
                 // add the word to the found list
                 mFoundWords.add(word);
             }
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
         // if the list to find constains the words, but reversed, do the same thing as above
         } else if (wordsToFind.contains(new StringBuilder(word).reverse().toString())) {
             String w = new StringBuilder(word).reverse().toString();
-            if (!mFoundWords.contains(w)) {
+            if (!mFoundWords.contains(w) && !w.isEmpty()) {
                 mFoundWords.add(w);
             }
             found = true;
