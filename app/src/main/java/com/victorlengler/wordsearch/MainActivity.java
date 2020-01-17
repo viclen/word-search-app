@@ -101,13 +101,15 @@ public class MainActivity extends AppCompatActivity {
             if (mFoundWords == null) {
                 mFoundWords = new ArrayList();
             }
+
+            if(mFoundWords.size() == wordsToFind.size()){
+                showYouWin();
+            }
         }
 
         measure();
 
         loadGame();
-
-        showYouWin();
     }
 
     public void measure(){
