@@ -16,5 +16,5 @@ These are the screenshots of the game when some words have been found, but not a
 
 ### End of the Game
 These are the screenshots of the game when all words have been found.
-![Portrait Orientation](screenshots/endgameportrait.png?s=100)
+![Portrait Orientation](screenshots/endgameportrait.png)
 ![Landscape Orientation](screenshots/endgamelandscape.png)
