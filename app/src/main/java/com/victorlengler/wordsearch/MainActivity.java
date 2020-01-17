@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout mainLayout;
     Letter[][] lettersArray = new Letter[max][max];
     TextView winningText;
+    Button btnNewGame;
 
     ArrayList<View> alreadyAnimated = new ArrayList();
 
@@ -60,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
-        this.winningText = (TextView) findViewById(R.id.winningText);
-        hideYouWin();
-
-        Button btnNewGame = (Button)findViewById(R.id.buttonNewGame);
+        this.btnNewGame = (Button)findViewById(R.id.buttonNewGame);
 
         btnNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 loadGame();
             }
         });
+
+        this.winningText = (TextView) findViewById(R.id.winningText);
+        hideYouWin();
 
         if (savedInstanceState != null) {
             lettersArray = new Letter[10][10];
@@ -308,23 +309,16 @@ public class MainActivity extends AppCompatActivity {
         winningText.startAnimation(animation);
         winningText.setAlpha(1);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1400);
-//                    winningText.clearAnimation();
-//                    winningText.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
-                } catch (Exception e) {
-                    System.err.println(e);
-                }
-            }
-        }).start();
+        btnNewGame.getBackground().setTint(Color.WHITE);
+        btnNewGame.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
     public void hideYouWin() {
         winningText.clearAnimation();
         winningText.setAlpha(0);
+
+        btnNewGame.getBackground().setTint(getResources().getColor(R.color.colorPrimary));
+        btnNewGame.setTextColor(Color.WHITE);
     }
 
     @Override

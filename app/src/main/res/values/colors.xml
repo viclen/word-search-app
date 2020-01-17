@@ -10,6 +10,6 @@
     <color name="colorLetter">#636363</color>
     <color name="colorFoundWord">#949494</color>
     <color name="colorBackgroundLetter">#FFFFFF</color>
-    <color name="colorWinBack">#A100ABCA</color>
+    <color name="colorWinBack">#A10093AC</color>
     <color name="colorWinLetter">#FFFFFF</color>
 </resources>
