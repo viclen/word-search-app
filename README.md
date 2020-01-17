@@ -6,8 +6,8 @@ These are the screenshots of the game running.
 
 ### Game Start
 These are the screenshots of the game when no word has been found.
-![Portrait Orientation](screenshots/gamestartportrait.png | width=100)
-![Landscape Orientation](screenshots/gamestartlandscape.png | width=200)
+![Portrait Orientation](screenshots/gamestartportrait.png){:width="100px"}
+![Landscape Orientation](screenshots/gamestartlandscape.png){:width="200px"}
 
 ### Middle Game
 These are the screenshots of the game when some words have been found, but not all of them.
