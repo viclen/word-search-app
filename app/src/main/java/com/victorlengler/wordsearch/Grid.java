@@ -23,7 +23,7 @@ public class Grid extends TableLayout implements Serializable {
     private List<Letter> selectedLetters = new ArrayList();
     private Letter[][] lettersArray;
     private Letter firstSelected = null;
-    private int max;
+    private int maxGridSize;
     private int cellSize;
 
     public Grid(Context context) {
@@ -36,22 +36,25 @@ public class Grid extends TableLayout implements Serializable {
 
     public void generateGrid(List<String> wordsToFind, int max, int cellSize, int letterSize, Letter[][] letters) {
         this.lettersArray = letters;
-        this.max = max;
+        this.maxGridSize = max;
         this.cellSize = cellSize;
 
         if(!isGenerated()) {
             for (int i = 0; i < wordsToFind.size(); i++) {
                 Random rand = new Random();
                 String word = rand.nextInt(2) == 1 ? wordsToFind.get(i).toUpperCase() : new StringBuilder(wordsToFind.get(i).toUpperCase()).reverse().toString();
+
+                if(word.isEmpty()) break;
+
                 int direction = rand.nextInt(4) + 1;
                 int placeX, placeY;
 
-                Letter l = null;
+                Letter l;
 
                 switch (direction) {
                     case DIRECTION_DIAGONAL:
-                        placeX = rand.nextInt(11 - word.length());
-                        placeY = rand.nextInt(11 - word.length());
+                        placeX = rand.nextInt(max + 1 - word.length());
+                        placeY = rand.nextInt(max + 1 - word.length());
                         for (int j = 0; j < word.length(); j++) {
                             int x = (placeX + j) * cellSize;
                             int y = (placeY + j) * cellSize;
@@ -69,7 +72,7 @@ public class Grid extends TableLayout implements Serializable {
                         }
                         break;
                     case DIRECTION_DIAGONAL2:
-                        placeX = rand.nextInt(11 - word.length());
+                        placeX = rand.nextInt(max + 1 - word.length());
                         placeY = word.length() + rand.nextInt(11 - word.length()) - 1;
                         for (int j = 0; j < word.length(); j++) {
                             int x = (placeX + j) * cellSize;
@@ -88,8 +91,8 @@ public class Grid extends TableLayout implements Serializable {
                         }
                         break;
                     case DIRECTION_HORIZONTAL:
-                        placeX = rand.nextInt(10);
-                        placeY = rand.nextInt(11 - word.length());
+                        placeX = rand.nextInt(max);
+                        placeY = rand.nextInt(max + 1 - word.length());
                         for (int j = 0; j < word.length(); j++) {
                             int x = (placeX) * cellSize;
                             int y = (placeY + j) * cellSize;
@@ -107,8 +110,8 @@ public class Grid extends TableLayout implements Serializable {
                         }
                         break;
                     case DIRECTION_VERTICAL:
-                        placeY = rand.nextInt(10);
-                        placeX = rand.nextInt(11 - word.length());
+                        placeY = rand.nextInt(max);
+                        placeX = rand.nextInt(max + 1 - word.length());
                         for (int j = 0; j < word.length(); j++) {
                             int x = (placeX + j) * cellSize;
                             int y = (placeY) * cellSize;
@@ -270,8 +273,8 @@ public class Grid extends TableLayout implements Serializable {
     }
 
     public Letter getLetter(float x, float y) {
-        for (int i = 0; i < max; i++) {
-            for (int j = 0; j < max; j++) {
+        for (int i = 0; i < maxGridSize; i++) {
+            for (int j = 0; j < maxGridSize; j++) {
                 Letter letter = lettersArray[i][j];
                 if (letter.getX() < y - 1 && letter.getY() < x - 1 && letter.getX() + cellSize > y + 1 && letter.getY() + cellSize > x + 1) {
                     return letter;

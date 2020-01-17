@@ -39,6 +39,7 @@ public class Letter implements Serializable {
         view.setText(value + "");
         view.setTypeface(Typeface.create("casual", Typeface.BOLD));
         view.setPadding(0,0,0,0);
+        view.setGravity(View.TEXT_ALIGNMENT_CENTER);
     }
 
     public char getValue() {
