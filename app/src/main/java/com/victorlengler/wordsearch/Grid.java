@@ -25,7 +25,6 @@ public class Grid extends TableLayout implements Serializable {
     private Letter firstSelected = null;
     private int max;
     private int cellSize;
-    private boolean generated;
 
     public Grid(Context context) {
         super(context);
@@ -40,94 +39,97 @@ public class Grid extends TableLayout implements Serializable {
         this.max = max;
         this.cellSize = cellSize;
 
-        for (int i = 0; i < wordsToFind.size(); i++) {
-            Random rand = new Random();
-            String word = rand.nextInt(2) == 1 ? wordsToFind.get(i).toUpperCase() : new StringBuilder(wordsToFind.get(i).toUpperCase()).reverse().toString();
-            int direction = rand.nextInt(4) + 1;
-            int placeX, placeY;
+        if(!isGenerated()) {
+            for (int i = 0; i < wordsToFind.size(); i++) {
+                Random rand = new Random();
+                String word = rand.nextInt(2) == 1 ? wordsToFind.get(i).toUpperCase() : new StringBuilder(wordsToFind.get(i).toUpperCase()).reverse().toString();
+                int direction = rand.nextInt(4) + 1;
+                int placeX, placeY;
 
-            Letter l = null;
+                Letter l = null;
 
-            switch (direction) {
-                case DIRECTION_DIAGONAL:
-                    placeX = rand.nextInt(11 - word.length());
-                    placeY = rand.nextInt(11 - word.length());
-                    for (int j = 0; j < word.length(); j++) {
-                        int x = (placeX + j) * cellSize;
-                        int y = (placeY + j) * cellSize;
-                        if (letters[placeX + j][placeY + j] == null) {
+                switch (direction) {
+                    case DIRECTION_DIAGONAL:
+                        placeX = rand.nextInt(11 - word.length());
+                        placeY = rand.nextInt(11 - word.length());
+                        for (int j = 0; j < word.length(); j++) {
+                            int x = (placeX + j) * cellSize;
+                            int y = (placeY + j) * cellSize;
+                            if (letters[placeX + j][placeY + j] == null) {
+                                l = new Letter(word.charAt(j), x, y, cellSize, letterSize, this.getContext());
+                                l.getView().setBackgroundColor(Color.YELLOW);
+                                letters[placeX + j][placeY + j] = l;
+                            } else {
+                                for (int k = 0; k < j; k++) {
+                                    letters[placeX + k][placeY + k] = null;
+                                }
+                                i--;
+                                break;
+                            }
+                        }
+                        break;
+                    case DIRECTION_DIAGONAL2:
+                        placeX = rand.nextInt(11 - word.length());
+                        placeY = word.length() + rand.nextInt(11 - word.length()) - 1;
+                        for (int j = 0; j < word.length(); j++) {
+                            int x = (placeX + j) * cellSize;
+                            int y = (placeY - j) * cellSize;
+                            if (letters[placeX + j][placeY - j] == null) {
+                                l = new Letter(word.charAt(j), x, y, cellSize, letterSize, this.getContext());
+                                l.getView().setBackgroundColor(Color.YELLOW);
+                                letters[placeX + j][placeY - j] = l;
+                            } else {
+                                for (int k = 0; k < j; k++) {
+                                    letters[placeX + k][placeY - k] = null;
+                                }
+                                i--;
+                                break;
+                            }
+                        }
+                        break;
+                    case DIRECTION_HORIZONTAL:
+                        placeX = rand.nextInt(10);
+                        placeY = rand.nextInt(11 - word.length());
+                        for (int j = 0; j < word.length(); j++) {
+                            int x = (placeX) * cellSize;
+                            int y = (placeY + j) * cellSize;
                             l = new Letter(word.charAt(j), x, y, cellSize, letterSize, this.getContext());
-                            l.getView().setBackgroundColor(Color.YELLOW);
-                            letters[placeX + j][placeY + j] = l;
-                        } else {
-                            for (int k = 0; k < j; k++) {
-                                letters[placeX + k][placeY + k] = null;
+                            if (letters[placeX][placeY + j] == null) {
+                                l.getView().setBackgroundColor(Color.YELLOW);
+                                letters[placeX][placeY + j] = l;
+                            } else {
+                                for (int k = 0; k < j; k++) {
+                                    letters[placeX][placeY + k] = null;
+                                }
+                                i--;
+                                break;
                             }
-                            i--;
-                            break;
                         }
-                    }
-                    break;
-                case DIRECTION_DIAGONAL2:
-                    placeX = rand.nextInt(11 - word.length());
-                    placeY = word.length() + rand.nextInt(11 - word.length()) - 1;
-                    for (int j = 0; j < word.length(); j++) {
-                        int x = (placeX + j) * cellSize;
-                        int y = (placeY - j) * cellSize;
-                        if (letters[placeX + j][placeY - j] == null) {
+                        break;
+                    case DIRECTION_VERTICAL:
+                        placeY = rand.nextInt(10);
+                        placeX = rand.nextInt(11 - word.length());
+                        for (int j = 0; j < word.length(); j++) {
+                            int x = (placeX + j) * cellSize;
+                            int y = (placeY) * cellSize;
                             l = new Letter(word.charAt(j), x, y, cellSize, letterSize, this.getContext());
-                            l.getView().setBackgroundColor(Color.YELLOW);
-                            letters[placeX + j][placeY - j] = l;
-                        } else {
-                            for (int k = 0; k < j; k++) {
-                                letters[placeX + k][placeY - k] = null;
+                            if (letters[placeX + j][placeY] == null) {
+                                l.getView().setBackgroundColor(Color.YELLOW);
+                                letters[placeX + j][placeY] = l;
+                            } else {
+                                for (int k = 0; k < j; k++) {
+                                    letters[placeX + k][placeY] = null;
+                                }
+                                i--;
+                                break;
                             }
-                            i--;
-                            break;
                         }
-                    }
-                    break;
-                case DIRECTION_HORIZONTAL:
-                    placeX = rand.nextInt(10);
-                    placeY = rand.nextInt(11 - word.length());
-                    for (int j = 0; j < word.length(); j++) {
-                        int x = (placeX) * cellSize;
-                        int y = (placeY + j) * cellSize;
-                        l = new Letter(word.charAt(j), x, y, cellSize, letterSize, this.getContext());
-                        if (letters[placeX][placeY + j] == null) {
-                            l.getView().setBackgroundColor(Color.YELLOW);
-                            letters[placeX][placeY + j] = l;
-                        } else {
-                            for (int k = 0; k < j; k++) {
-                                letters[placeX][placeY + k] = null;
-                            }
-                            i--;
-                            break;
-                        }
-                    }
-                    break;
-                case DIRECTION_VERTICAL:
-                    placeY = rand.nextInt(10);
-                    placeX = rand.nextInt(11 - word.length());
-                    for (int j = 0; j < word.length(); j++) {
-                        int x = (placeX + j) * cellSize;
-                        int y = (placeY) * cellSize;
-                        l = new Letter(word.charAt(j), x, y, cellSize, letterSize, this.getContext());
-                        if (letters[placeX + j][placeY] == null) {
-                            l.getView().setBackgroundColor(Color.YELLOW);
-                            letters[placeX + j][placeY] = l;
-                        } else {
-                            for (int k = 0; k < j; k++) {
-                                letters[placeX + k][placeY] = null;
-                            }
-                            i--;
-                            break;
-                        }
-                    }
-                    break;
+                        break;
+                }
             }
         }
 
+        this.removeAllViews();
         for (int i = 0; i < max; i++) {
             TableRow row = new TableRow(this.getContext());
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT));
@@ -135,14 +137,21 @@ public class Grid extends TableLayout implements Serializable {
             for (int j = 0; j < max; j++) {
                 char letter = randomLetter();
 
-                if (letters[i][j] == null) {
+                Letter l = letters[i][j];
+
+                if (l == null) {
                     int x = i * cellSize;
                     int y = j * cellSize;
-                    letters[i][j] = new Letter(letter, x, y, cellSize, letterSize, this.getContext());
+                    l = new Letter(letter, x, y, cellSize, letterSize, this.getContext());
+                }else{
+                    l = new Letter(letters[i][j].getValue(), letters[i][j].getX(), letters[i][j].getY(), cellSize, letterSize, this.getContext());
+                    l.setFound(letters[i][j].isFound());
                 }
+                letters[i][j] = l;
 
                 row.addView(letters[i][j].getView());
             }
+
             this.addView(row);
         }
 

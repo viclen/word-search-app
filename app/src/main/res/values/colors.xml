@@ -5,9 +5,11 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorToFind">#00628A</color>
     <color name="colorFound">#007CAD</color>
-    <color name="colorSelected">#59D8FF</color>
+    <color name="colorSelected">#9DE2FF</color>
     <color name="colorBorder">#664D4D4D</color>
     <color name="colorLetter">#636363</color>
     <color name="colorFoundWord">#949494</color>
     <color name="colorBackgroundLetter">#FFFFFF</color>
+    <color name="colorWinBack">#A100ABCA</color>
+    <color name="colorWinLetter">#FFFFFF</color>
 </resources>

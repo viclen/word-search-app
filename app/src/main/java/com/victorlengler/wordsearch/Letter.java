@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Letter implements Serializable {
@@ -78,5 +80,11 @@ public class Letter implements Serializable {
                 ", x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @NonNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

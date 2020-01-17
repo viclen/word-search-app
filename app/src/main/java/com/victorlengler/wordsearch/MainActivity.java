@@ -43,11 +43,13 @@ public class MainActivity extends AppCompatActivity {
     TableLayout mWordsLayout;
     ConstraintLayout mainLayout;
     Letter[][] lettersArray = new Letter[max][max];
+    TextView winningText;
 
     ArrayList<View> alreadyAnimated = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -58,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
         this.mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
+        this.winningText = (TextView) findViewById(R.id.winningText);
+        hideYouWin();
+
         Button btnNewGame = (Button)findViewById(R.id.buttonNewGame);
 
         btnNewGame.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 lettersArray = new Letter[max][max];
                 mFoundWords = new ArrayList();
                 mGrid.removeAllViews();
+                hideYouWin();
                 loadGame();
             }
         });
@@ -78,11 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     Letter l = (Letter)savedInstanceState.getSerializable("Letter" + i * max + j);
                     if(l != null){
                         lettersArray[i][j] = l;
+                    }else{
+                        break;
                     }
                 }
             }
 
-            mGrid = (Grid)savedInstanceState.getSerializable(STATE_GRID);
             mFoundWords = savedInstanceState.getStringArrayList(STATE_FOUND);
 
             if (lettersArray == null) {
@@ -93,14 +100,13 @@ public class MainActivity extends AppCompatActivity {
             if (mFoundWords == null) {
                 mFoundWords = new ArrayList();
             }
-            if(mGrid == null){
-                mGrid = findViewById(R.id.grid);
-            }
         }
 
         measure();
 
         loadGame();
+
+        showYouWin();
     }
 
     public void measure(){
@@ -159,9 +165,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadGame() {
         this.selectingTextView.setText("");
 
-        if(!mGrid.isGenerated()) {
-            mGrid.generateGrid(wordsToFind, max, cellSize, letterSize, lettersArray);
-        }
+        mGrid.generateGrid(wordsToFind, max, cellSize, letterSize, lettersArray);
 
         mWordsLayout.removeAllViews();
         for (int i = 0; i < wordsRows; i++) {
@@ -254,15 +258,26 @@ public class MainActivity extends AppCompatActivity {
             word += selectedLetters.get(i).getValue();
         }
 
+        boolean found = false;
+
         if (wordsToFind.contains(word)) {
-            mFoundWords.add(word);
-            return true;
+            if(!mFoundWords.contains(word)){
+                mFoundWords.add(word);
+            }
+            found = true;
         } else if (wordsToFind.contains(new StringBuilder(word).reverse().toString())) {
-            mFoundWords.add(new StringBuilder(word).reverse().toString());
-            return true;
+            String w = new StringBuilder(word).reverse().toString();
+            if(!mFoundWords.contains(w)) {
+                mFoundWords.add(w);
+            }
+            found = true;
         }
 
-        return false;
+        if(mFoundWords.size() == wordsToFind.size()){
+            showYouWin();
+        }
+
+        return found;
     }
 
     public void blink(final View view) {
@@ -288,9 +303,35 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    public void showYouWin() {
+        final Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.you_win_anim);
+        winningText.startAnimation(animation);
+        winningText.setAlpha(1);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1400);
+//                    winningText.clearAnimation();
+//                    winningText.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        }).start();
+    }
+
+    public void hideYouWin() {
+        winningText.clearAnimation();
+        winningText.setAlpha(0);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        System.out.println("onSaveInstanceState");
 
         for(int i = 0; i<max; i++){
             for(int j = 0; j<max; j++){
@@ -298,32 +339,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        outState.putSerializable(STATE_GRID, mGrid);
         outState.putStringArrayList(STATE_FOUND, mFoundWords);
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if(savedInstanceState == null){
-            return;
-        }
-
-        lettersArray = new Letter[10][10];
-
-        for(int i = 0; i<max; i++){
-            for(int j = 0; j<max; j++){
-                Letter l = (Letter)savedInstanceState.getSerializable("Letter" + i * max + j);
-                if(l != null){
-                    lettersArray[i][j] = l;
-                }
-            }
-        }
-
-        mGrid = (Grid)savedInstanceState.getSerializable(STATE_GRID);
-        mFoundWords = savedInstanceState.getStringArrayList(STATE_FOUND);
-
-        update();
-    }
 }
