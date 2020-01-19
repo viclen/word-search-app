@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 // if the timer can count and there is a current timer, set to the text view
                 if (timerStopped && savedInstanceState.getString(STATE_CURRENT_TIMER) != null) {
                     totalTime.setText(savedInstanceState.getString(STATE_CURRENT_TIMER));
+                    timerText.setText(savedInstanceState.getString(STATE_CURRENT_TIMER));
                 }
             }
 
@@ -308,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
             this.cellSize = height / (maxGridSize + 1);
 
             // number of rows in the
-            wordsRows = wordsToFind.size();
+            wordsRows = wordsToFind.contains("") ? wordsToFind.size() - 1 : wordsToFind.size();
 
             // gets the current values
             ConstraintSet constraintSet = new ConstraintSet();
@@ -338,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // set the letter size
-        this.letterSize = cellSize / 3;
+        this.letterSize = (int)(cellSize / 3.8);
     }
 
     // this function creates the ui for the game using the previously set values
@@ -653,6 +654,9 @@ public class MainActivity extends AppCompatActivity {
 
         // save the size of the grid
         outState.putInt(STATE_GRID_SIZE, maxGridSize);
+
+        // save the current time
+        outState.putString(STATE_CURRENT_TIMER, timerText.getText().toString());
 
         // if the game started date exists, save it too
         if (gameStartedDate != null) {

@@ -2,6 +2,7 @@ package com.victorlengler.wordsearch;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,12 +35,11 @@ public class Letter implements Serializable {
         view.setWidth(cellSize);
         view.setHeight(cellSize);
         view.setBackgroundResource(R.drawable.letter_border);
-        view.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         view.setTextSize(letterSize);
         view.setText(value + "");
         view.setTypeface(Typeface.create("casual", Typeface.BOLD));
         view.setPadding(0,0,0,0);
-        view.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        view.setGravity(Gravity.CENTER);
     }
 
     public char getValue() {
