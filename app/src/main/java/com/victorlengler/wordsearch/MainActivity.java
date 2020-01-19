@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 // set the game started time
                 gameStartedDate.setTime(timer);
 
-                // if the timer can count and there is a current timer, set to the text view
+                // if the timer cannot count and there is a current timer, set to the text view
                 if (timerStopped && savedInstanceState.getString(STATE_CURRENT_TIMER) != null) {
                     totalTime.setText(savedInstanceState.getString(STATE_CURRENT_TIMER));
                     timerText.setText(savedInstanceState.getString(STATE_CURRENT_TIMER));

@@ -15,28 +15,38 @@ import java.util.List;
 import java.util.Random;
 
 public class Grid extends TableLayout implements Serializable {
+    // direction constants
     public static final int DIRECTION_HORIZONTAL = 1;
     public static final int DIRECTION_VERTICAL = 2;
     public static final int DIRECTION_DIAGONAL = 3;
     public static final int DIRECTION_DIAGONAL2 = 4;
 
+    // list of letter that are being selected by the user in the grid
     private List<Letter> selectedLetters = new ArrayList();
+    // 2 dimensional array with the letters as a grid
     private Letter[][] lettersArray;
+    // the first letter of the selection
     private Letter firstSelected = null;
+    // the maximum width and height of the grid
     private int maxGridSize;
+    // the size of each cell
     private int cellSize;
 
+    // constructors
     public Grid(Context context) {
         super(context);
     }
-
     public Grid(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    // function to generate the grid view with the letters based on the information given
     public void generateGrid(List<String> wordsToFind, int max, int cellSize, int letterSize, Letter[][] letters) {
+        // the 2 dimensional array of letters
         this.lettersArray = letters;
+        // the width and height of the grid
         this.maxGridSize = max;
+        // 
         this.cellSize = cellSize;
 
         if(!isGenerated()) {
