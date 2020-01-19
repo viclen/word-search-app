@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
+/**
+ * the letter class to put in the grid
+ */
 public class Letter implements Serializable {
     // the letter itself as a character
     private char value;
@@ -21,7 +24,15 @@ public class Letter implements Serializable {
     // whether this letter was found in a word
     private boolean found;
 
-    // constructor
+    /**
+     * constructor method
+     * @param value the letter character
+     * @param x the x position of the letter on the screen
+     * @param y the y position of the letter on the screen
+     * @param cellSize the size of the cell
+     * @param letterSize the size of the letter's font
+     * @param context the application context
+     */
     public Letter(char value, int x, int y, int cellSize, int letterSize, Context context) {
         // set attributes
         this.value = value;

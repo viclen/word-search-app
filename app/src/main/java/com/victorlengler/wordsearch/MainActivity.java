@@ -190,7 +190,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // function to open the new game dialog with the difficulties
+    /**
+     * function to open the new game dialog with the difficulties
+     */
     public void askNewGame() {
         // creates the variable
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -246,8 +248,10 @@ public class MainActivity extends AppCompatActivity {
                 }).create().show();
     }
 
-    // this function measures the screen size and gets the orientation
-    // based on theese values, it adapts the sizes and bounds to fit the screen
+    /**
+     * this function measures the screen size and gets the orientation
+     * based on these values, it adapts the sizes and bounds to fit the screen
+     */
     public void measure() {
         // get the measures of the screen
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -342,7 +346,9 @@ public class MainActivity extends AppCompatActivity {
         this.letterSize = (int)(cellSize / 3.8);
     }
 
-    // this function creates the ui for the game using the previously set values
+    /**
+     * this function creates the ui for the game using the previously set values
+     */
     public void loadGame() {
         // empty the current selection text
         this.selectingTextView.setText("");
@@ -391,7 +397,9 @@ public class MainActivity extends AppCompatActivity {
         update();
     }
 
-    // this function runs on each change so it adapts the ui, like colors and animations to users actions
+    /**
+     * this function runs on each change so it adapts the ui, like colors and animations to users actions
+     */
     public void update() {
         // the list of the selected letters
         List<Letter> selectedLetters = mGrid.getSelectedLetters();
@@ -442,7 +450,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // event of touching this activity
+    /**
+     * handler for the event of touching this activity's view
+     * @param event the MotionEvent object
+     * @return the super's method
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         List<Letter> selectedLetters = mGrid.getSelectedLetters();
@@ -471,7 +483,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    // this function verifies if the current selected letters form a word in the list to find
+    /**
+     * this function verifies if the current selected letters form a word in the list to find
+     * @return wheter the selected letters form a word in the word list
+     */
     public boolean verifySelected() {
         List<Letter> selectedLetters = mGrid.getSelectedLetters();
 
@@ -512,7 +527,10 @@ public class MainActivity extends AppCompatActivity {
         return found;
     }
 
-    // this functions does the animation of blinking a view
+    /**
+     * this functions does the animation of blinking a view
+     * @param view the view to animate
+     */
     public void blink(final View view) {
         // if the view has already been animated, cancel
         if (alreadyAnimated.contains(view)) {
@@ -544,7 +562,9 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    // this function show the You Win message on the screen
+    /**
+     * this function show the You Win message on the screen
+     */
     public void showYouWin() {
         // the animation for the views
         final Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.you_win_anim);
@@ -569,7 +589,9 @@ public class MainActivity extends AppCompatActivity {
         timerStopped = true;
     }
 
-    // this function hides the views of the function above
+    /**
+     * this function hides the views of the function above
+     */
     public void hideYouWin() {
         // clear the animation and set to invisible
         winningText.clearAnimation();
@@ -586,7 +608,9 @@ public class MainActivity extends AppCompatActivity {
         totalTime.setText("");
     }
 
-    // this function runs recursively to count the timer
+    /**
+     * this function runs recursively to count the timer
+     */
     public void startTimer() {
         // if the timer is stopped, cancel
         if (timerStopped) {
@@ -637,7 +661,10 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-    // function to save data when the orientation changes
+    /**
+     * function to save data when the orientation changes
+     * @param outState the bundle to save the data inside
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
