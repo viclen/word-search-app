@@ -18,8 +18,8 @@ Word Search App for Shopify
 
 ### Additional
 - Timer to evaluate how fast the user found the words. :white_check_mark:
-- 3 difficulties: Easy (10x10 grid, 6 words), Normal (12x12 grid, 7 words), Hard (15x15 grid, 8 words)
-- New game button
+- 3 difficulties: Easy (10x10 grid, 6 words), Normal (12x12 grid, 7 words), Hard (15x15 grid, 8 words). :white_check_mark:
+- New game button. :white_check_mark:
 
 ## Screenshots
 These are the screenshots of the game running.
