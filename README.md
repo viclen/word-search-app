@@ -1,7 +1,9 @@
 # word-search-app
-Word Search App for Shopify
+Word Search App for Shopify Mobile Developer Intern Challenge 2020.
 
 ## Features
+These are the features of the app. 
+The additional features I made when I finished the required and the bonus ones, because I enjoyed learning it and I couldn't stop just with the simplest.
 
 ### Required
 - Create a word search mobile app for Android. :white_check_mark:
