@@ -32,19 +32,26 @@ These are the screenshots of the game running.
 
 ### Game Start
 These are the screenshots of the game when no word has been found.
+
 ![Portrait Orientation](screenshots/gamestartportrait.png)
 ![Landscape Orientation](screenshots/gamestartlandscape.png)
 
 ### Middle Game
 These are the screenshots of the game when some words have been found, but not all of them.
+
 ![Portrait Orientation](screenshots/middlegameportrait.png)
 ![Landscape Orientation](screenshots/middlegamelandscape.png)
 
 ### End of the Game
 These are the screenshots of the game when all words have been found.
+
 ![Portrait Orientation](screenshots/endgameportrait.png)
 ![Landscape Orientation](screenshots/endgamelandscape.png)
 
-### Difficulty choosing
-This is the screenshot from before the game start, when the user chooses the difficulty of the game.
-![Difficulty choosing](screenshots/choosedifficulty.png)
+### Other screenshots
+These are other screenshots from the app, like the menu, help, and normal and hard difficulties.
+
+![Main Menu](screenshots/mainmenu.png)
+![Help](screenshots/help.png)
+![12x12](screenshots/12x12.png)
+![15x15](screenshots/15x15.png)
