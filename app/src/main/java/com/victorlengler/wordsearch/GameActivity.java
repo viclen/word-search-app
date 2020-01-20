@@ -339,7 +339,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // set the letter size
-        this.letterSize = (int) (cellSize / 3);
+        this.letterSize = (int) (cellSize / 3.2f);
     }
 
     /**
@@ -357,7 +357,7 @@ public class GameActivity extends AppCompatActivity {
 
         // iterates for each row
         for (int i = 0; i < wordsRows; i++) {
-
+            // add a new row to the table
             mWordsLayout.addView(new TableRow(this));
             TableRow tr = (TableRow) mWordsLayout.getChildAt(i % wordsRows);
 
@@ -371,7 +371,7 @@ public class GameActivity extends AppCompatActivity {
                 TextView t = new TextView(this);
                 t.setPadding(10, 10, 10, 10);
                 t.setText(word);
-                t.setTextSize(letterSize);
+                t.setTextSize((int)letterSize * 0.9f);
                 t.setTextColor(getResources().getColor(R.color.colorToFind));
                 t.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
                 t.setTypeface(Typeface.create("casual", Typeface.BOLD));
