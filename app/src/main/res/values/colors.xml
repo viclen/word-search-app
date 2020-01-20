@@ -3,13 +3,14 @@
     <color name="colorPrimary">#007CAD</color>
     <color name="colorPrimaryDark">#00628A</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorToFind">#00628A</color>
-    <color name="colorFound">#007CAD</color>
-    <color name="colorSelected">#9DE2FF</color>
+    <color name="colorToFind">#D1D1D1</color>
+    <color name="colorFound">#00007CAD</color>
+    <color name="colorSelected">#FFFFFF</color>
     <color name="colorBorder">#664D4D4D</color>
-    <color name="colorLetter">#636363</color>
+    <color name="colorLetter">#3A3A3A</color>
     <color name="colorFoundWord">#949494</color>
-    <color name="colorBackgroundLetter">#FFFFFF</color>
-    <color name="colorWinBack">#A10093AC</color>
-    <color name="colorWinLetter">#FFFFFF</color>
+    <color name="colorBackgroundLetter">#9CE4E4E4</color>
+    <color name="colorWinBack">#CEFFFFFF</color>
+    <color name="colorWinLetter">#FF9800</color>
+    <color name="colorBtnBackground">#FF9800</color>
 </resources>

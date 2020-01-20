@@ -5,8 +5,9 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".GameActivity">
 
     <TextView
         android:id="@+id/selectingTextView"
@@ -15,7 +16,7 @@
         android:fontFamily="casual"
         android:text="Current"
         android:textAlignment="center"
-        android:textColor="@color/colorLetter"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="91dp"
@@ -26,14 +27,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/letter_border"
         android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="395dp"></com.victorlengler.wordsearch.Grid>
 
     <!--<TableLayout-->
-         <!--/>-->
+    <!--/>-->
 
     <TextView
         android:id="@+id/timerText"
@@ -43,7 +43,7 @@
         android:gravity="top"
         android:text="1:23"
         android:textAlignment="center"
-        android:textColor="@color/colorLetter"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="194dp"
@@ -53,7 +53,6 @@
         android:id="@+id/wordsTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/letter_border"
         tools:layout_editor_absoluteX="91dp"
         tools:layout_editor_absoluteY="731dp" />
 
@@ -61,7 +60,7 @@
         android:id="@+id/winningText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0"
+        android:alpha="1"
         android:background="@drawable/you_win"
         android:fontFamily="casual"
         android:gravity="center_horizontal|center_vertical"
@@ -81,9 +80,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/colorBtnBackground"
         android:text="New Game"
-        android:textColor="@android:color/white"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,7 +94,7 @@
         android:gravity="top"
         android:text="1:23"
         android:textAlignment="center"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWinLetter"
         android:textSize="56sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

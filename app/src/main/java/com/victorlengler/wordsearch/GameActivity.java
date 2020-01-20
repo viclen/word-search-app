@@ -1,11 +1,12 @@
 package com.victorlengler.wordsearch;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,7 +28,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
     // strings used to save data when orientation changes
     // found words
     final String STATE_FOUND = "found";
@@ -75,11 +76,13 @@ public class MainActivity extends AppCompatActivity {
     Date gameStartedDate;
     // if the timer is stopped, it doesnt count anymore
     boolean timerStopped;
+    // the difficulty of the game
+    int difficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         // set the views to the variables
         this.mGrid = findViewById(R.id.grid);
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         btnNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                askNewGame();
+                makeNewGame();
             }
         });
 
@@ -107,13 +110,17 @@ public class MainActivity extends AppCompatActivity {
             // get saved grid size
             maxGridSize = savedInstanceState.getInt(STATE_GRID_SIZE, 10);
 
-            // if grid size is 12, the dificulty is normal
-            if (maxGridSize == 12) {
+            // if the dificulty is normal
+            if (difficulty == 1) {
                 wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", ""));
 
-            // if grid size is 15, the dificulty is hard
-            } else if (maxGridSize == 15) {
+                // if the dificulty is hard
+            } else if (difficulty == 2) {
                 wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", "REACT"));
+
+                // if the difficulty is easy
+            } else {
+                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE"));
             }
 
             // create the letters array with the size of the grid
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             if (lettersArray == null) {
                 lettersArray = new Letter[maxGridSize][maxGridSize];
 
-            // otherwise sets it to the grid
+                // otherwise sets it to the grid
             } else {
                 mGrid.setLettersArray(lettersArray);
             }
@@ -153,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 // shows the You Win message
                 showYouWin();
 
-            // otherwise allows the timer to count
+                // otherwise allows the timer to count
             } else {
                 timerStopped = false;
             }
@@ -185,67 +192,56 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // measure the screen to adapt
             measure();
-            // open dificulty dialog
-            askNewGame();
+            // create new game
+            makeNewGame();
         }
     }
 
     /**
-     * function to open the new game dialog with the difficulties
+     * function to create a new game getting the difficulty
      */
-    public void askNewGame() {
-        // creates the variable
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public void makeNewGame() {
+        Intent i = getIntent();
+        difficulty = (int) i.getLongExtra(MenuActivity.DIFFICULTY_EXTRA, 0);
 
-        // opens the dialog
-        builder.setTitle("Choose the game difficulty")
-                // if the user is already in a game, the dialog is cancelable
-                .setCancelable(mGrid.isGenerated())
-                // get the string array from resources
-                .setItems(R.array.difficulties, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // when the user selects some difficult
-                        switch (which) {
-                            // easy
-                            case 0:
-                                // changes the size and the words to find
-                                maxGridSize = 10;
-                                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE"));
-                                break;
-                            // normal
-                            case 1:
-                                // changes the size and the words to find
-                                maxGridSize = 12;
-                                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", ""));
-                                break;
-                            // hard
-                            case 2:
-                                // changes the size and the words to find
-                                maxGridSize = 15;
-                                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", "REACT"));
-                        }
+        // when the user selects some difficulty
+        switch (difficulty) {
+            // easy
+            case 0:
+                // changes the size and the words to find
+                maxGridSize = 10;
+                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE"));
+                break;
+            // normal
+            case 1:
+                // changes the size and the words to find
+                maxGridSize = 12;
+                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", ""));
+                break;
+            // hard
+            case 2:
+                // changes the size and the words to find
+                maxGridSize = 15;
+                wordsToFind = new ArrayList(Arrays.asList("SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "FLUTTER", "REACT"));
+        }
 
-                        // creates the empty array of the asked size
-                        lettersArray = new Letter[maxGridSize][maxGridSize];
-                        // empty the list of found words
-                        mFoundWords = new ArrayList();
-                        // clear the grid on the screen
-                        mGrid.removeAllViews();
-                        // hide the you win message
-                        hideYouWin();
-                        // clear the timers
-                        gameStartedDate = null;
-                        timerStopped = false;
-                        // measure the screen to adapt
-                        measure();
-                        // load game
-                        loadGame();
-                        // start timer
-                        startTimer();
-
-                // show the dialog
-                    }
-                }).create().show();
+        // creates the empty array of the asked size
+        lettersArray = new Letter[maxGridSize][maxGridSize];
+        // empty the list of found words
+        mFoundWords = new ArrayList();
+        // clear the grid on the screen
+        mGrid.removeAllViews();
+        // hide the you win message
+        hideYouWin();
+        // clear the timers
+        gameStartedDate = null;
+        timerStopped = false;
+        // measure the screen to adapt
+        measure();
+        // load game
+        loadGame();
+        // start timer
+        startTimer();
     }
 
     /**
@@ -298,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
             // apply the values
             constraintSet.applyTo(mainLayout);
 
-        // orientation landscape
+            // orientation landscape
         } else {
             // get the measures
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -310,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
 
             // sets the cells size
-            this.cellSize = height / (maxGridSize + 1);
+            this.cellSize = height / (maxGridSize + 2);
 
             // number of rows in the
             wordsRows = wordsToFind.contains("") ? wordsToFind.size() - 1 : wordsToFind.size();
@@ -343,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // set the letter size
-        this.letterSize = (int)(cellSize / 3.8);
+        this.letterSize = (int) (cellSize / 3);
     }
 
     /**
@@ -426,8 +422,8 @@ public class MainActivity extends AppCompatActivity {
                         l.getView().setBackgroundResource(R.drawable.letter_found);
                         l.getView().setTextColor(Color.WHITE);
                         blink(l.getView());
-                    // if the letter was not found in a word, set the not found color
-                    }else{
+                        // if the letter was not found in a word, set the not found color
+                    } else {
                         l.getView().setBackgroundResource(R.drawable.letter_border);
                         l.getView().setTextColor(getResources().getColor(R.color.colorLetter));
                     }
@@ -452,6 +448,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * handler for the event of touching this activity's view
+     *
      * @param event the MotionEvent object
      * @return the super's method
      */
@@ -485,6 +482,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * this function verifies if the current selected letters form a word in the list to find
+     *
      * @return wheter the selected letters form a word in the word list
      */
     public boolean verifySelected() {
@@ -509,7 +507,7 @@ public class MainActivity extends AppCompatActivity {
 
             // sets found to true
             found = true;
-        // if the list to find constains the words, but reversed, do the same thing as above
+            // if the list to find constains the words, but reversed, do the same thing as above
         } else if (wordsToFind.contains(new StringBuilder(word).reverse().toString())) {
             String w = new StringBuilder(word).reverse().toString();
             if (!mFoundWords.contains(w) && !w.isEmpty()) {
@@ -529,6 +527,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * this functions does the animation of blinking a view
+     *
      * @param view the view to animate
      */
     public void blink(final View view) {
@@ -575,8 +574,8 @@ public class MainActivity extends AppCompatActivity {
         winningText.startAnimation(animation);
 
         // changes the colors of the new game button
-        btnNewGame.getBackground().setTint(Color.WHITE);
-        btnNewGame.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        btnNewGame.getBackground().setTint(getResources().getColor(R.color.colorBtnBackground));
+        btnNewGame.setTextColor(Color.WHITE);
 
         // sets the total timer text with the current timer
         totalTime.setText(timerText.getText());
@@ -587,6 +586,9 @@ public class MainActivity extends AppCompatActivity {
 
         // stop the timer
         timerStopped = true;
+
+        // save the score
+        saveHighScore();
     }
 
     /**
@@ -598,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
         winningText.setAlpha(0);
 
         // changes the colors of the new game button
-        btnNewGame.getBackground().setTint(getResources().getColor(R.color.colorPrimary));
+        btnNewGame.getBackground().setTint(getResources().getColor(R.color.colorBtnBackground));
         btnNewGame.setTextColor(Color.WHITE);
 
         // clear the animation and set to invisible
@@ -663,6 +665,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * function to save data when the orientation changes
+     *
      * @param outState the bundle to save the data inside
      */
     @Override
@@ -689,5 +692,14 @@ public class MainActivity extends AppCompatActivity {
         if (gameStartedDate != null) {
             outState.putLong(STATE_TIMER, gameStartedDate.getTime());
         }
+    }
+
+    /**
+     * this function saves the score if the time is less than the current highscore
+     *
+     * @return whether it is the highscore
+     */
+    public boolean saveHighScore() {
+        return MenuActivity.instance.saveHighScore(totalTime.getText().toString(), difficulty);
     }
 }

@@ -389,7 +389,7 @@ public class Grid extends TableLayout implements Serializable {
         }
 
         // update the interface
-        ((MainActivity)this.getContext()).update();
+        ((GameActivity)this.getContext()).update();
 
         return true;
     }
@@ -417,7 +417,7 @@ public class Grid extends TableLayout implements Serializable {
      * @return the result of the main activity's verifySelected
      */
     public boolean verifySelected() {
-        return ((MainActivity)this.getContext()).verifySelected();
+        return ((GameActivity)this.getContext()).verifySelected();
     }
 
     /**
