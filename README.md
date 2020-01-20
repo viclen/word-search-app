@@ -24,6 +24,8 @@ The additional features I made when I finished the required and the bonus ones, 
 - New game button. :white_check_mark:
 - Words in 4 directions (vertical, horizontal and 2 diagonal). :white_check_mark:
 - Words can be reversed. The user can select them reversed, and it will still work. :white_check_mark:
+- Main Menu. :white_check_mark:
+- Help. :white_check_mark:
 
 ## Screenshots
 These are the screenshots of the game running.
